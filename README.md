@@ -1,1 +1,2 @@
 # ranked_or_not
+I often find myself forgetting if I queued for ranked or normal when playing TFT or League, so I made this very simple project, that periodically checks if I'm in game and says if the current game is ranked or not.
