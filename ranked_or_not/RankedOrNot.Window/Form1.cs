@@ -1,18 +1,19 @@
 using Microsoft.Extensions.Logging;
 using RankedOrNot.Core;
+using RankedOrNot.Core.Interfaces;
 
 namespace RankedOrNot.Window
 {
     public partial class Form1 : Form
     {
-        IRiotAPICommunication _riotAPICommunication;
-        ILogger<Form1> _logger;
-        CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        private readonly IMatchInfoHelper _matchInfoHelper;
+        private readonly ILogger<Form1> _logger;
+        private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
-        public Form1(IRiotAPICommunication riotAPICommunication, ILogger<Form1> logger)
+        public Form1(IMatchInfoHelper matchInfoHelper, ILogger<Form1> logger)
         {
             InitializeComponent();
-            _riotAPICommunication = riotAPICommunication;
+            _matchInfoHelper = matchInfoHelper;
             _logger = logger;
             label1.ForeColor = Color.Black;
             Task.Run(() => CheckForMatches(_cancellationTokenSource.Token), _cancellationTokenSource.Token);
@@ -23,19 +24,25 @@ namespace RankedOrNot.Window
             _cancellationTokenSource.Cancel();
         }
 
+        private void ReportError()
+        {
+            SetLabelText("An error has occured...");
+            SetLabelColour(Color.Red);
+        }
+
         private void UpdateMatchInfo(MatchInfo matchInfo)
         {
             if (matchInfo == null)
                 return;
 
 
-            if (!matchInfo.isOngoing)
+            if (!matchInfo.IsOngoing)
             {
                 SetLabelText("You're not in game right now :(");
                 SetLabelColour(Color.Black);
             }
                 
-            else if(matchInfo.isRanked)
+            else if(matchInfo.IsRanked)
             {
                 SetLabelText("Current match is ranked !");
                 SetLabelColour(Color.Red);
@@ -90,13 +97,13 @@ namespace RankedOrNot.Window
         {
             try
             {
-                var matchInfo = await _riotAPICommunication.GetMatchInfo();
+                var matchInfo = await _matchInfoHelper.GetMatchInfo();
                 if (matchInfo != null)
                     UpdateMatchInfo(matchInfo);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                ReportError();
             }
         }
     }

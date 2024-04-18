@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RankedOrNot.Core.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace RankedOrNot.Window
 {
-    internal class APISettings
+    internal class APISettings: IAPISettings
     {
-        internal string LeagueName { get => "helloworld777"; }
-        internal string Tagline{ get => "euw"; }
-        internal string ServiceApiKey { get; set; } = "";
+        public string LeagueApiKey { get; set; } = "";
+        public string TftApiKey { get; set; } = "";
+        public string LeagueName { get; set; } = "helloworld777";
+        public string Tagline { get; set; } = "euw";
     }
 }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RankedOrNot.Core
+namespace RankedOrNot.Core.Interfaces
 {
-    public interface IRiotAPICommunication
+    public interface IMatchInfoHelper
     {
         Task<MatchInfo> GetMatchInfo();
     }

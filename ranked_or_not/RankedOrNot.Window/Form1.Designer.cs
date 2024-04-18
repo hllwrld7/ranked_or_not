@@ -47,8 +47,10 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(284, 77);
             Controls.Add(label1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "Form1";
-            Text = "Form1";
+            Text = "Ranked or not";
+            TopMost = true;
             FormClosed += Form1_FormClosed;
             ResumeLayout(false);
             PerformLayout();
