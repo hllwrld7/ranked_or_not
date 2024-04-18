@@ -33,7 +33,9 @@ namespace RankedOrNot.Window
             var apiSettings = new APISettings
             {
                 LeagueApiKey = config["ApiSettings:LeagueApiKey"],
-                TftApiKey = config["ApiSettings:TftApiKey"]
+                TftApiKey = config["ApiSettings:TftApiKey"],
+                LeagueName = System.Configuration.ConfigurationManager.AppSettings["LeagueName"],
+                Tagline = System.Configuration.ConfigurationManager.AppSettings["Tagline"]
             };
 
             return Host.CreateDefaultBuilder()

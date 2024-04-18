@@ -9,9 +9,9 @@ namespace RankedOrNot.Window
 {
     internal class APISettings: IAPISettings
     {
-        public string LeagueApiKey { get; set; } = "";
-        public string TftApiKey { get; set; } = "";
-        public string LeagueName { get; set; } = "helloworld777";
-        public string Tagline { get; set; } = "euw";
+        public string LeagueApiKey { get; set; }
+        public string TftApiKey { get; set; }
+        public string LeagueName { get; set; }
+        public string Tagline { get; set; }
     }
 }
