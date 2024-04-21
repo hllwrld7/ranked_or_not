@@ -12,27 +12,29 @@ namespace RankedOrNot.Core.Services
     {
         private readonly List<string> RANKED_QUEUE_IDS = new List<string> { "420", "440", "1100" };
         private readonly IRiotAPICommunication _riotAPICommunication;
+        private readonly IGameClientAPICommunication _gameClientAPICommunication;
 
-        public MatchInfoHelper(IRiotAPICommunication riotAPICommunication)
+        public MatchInfoHelper(IRiotAPICommunication riotAPICommunication, IGameClientAPICommunication gameClientAPICommunication)
         {
             _riotAPICommunication = riotAPICommunication;
+            _gameClientAPICommunication = gameClientAPICommunication;
         }
 
         public async Task<MatchInfo> GetMatchInfo()
         {
             var matchInfo = new MatchInfo();
 
-            var requestResponse = await _riotAPICommunication.GetCurrentTftGame();
+            APIRequestResponse requestResponse;
+            var currentGameMode = await _gameClientAPICommunication.GetCurrentGameMode();
+            if (string.IsNullOrEmpty(currentGameMode))
+                return matchInfo;
+            else if (currentGameMode == "TFT")
+                requestResponse = await _riotAPICommunication.GetCurrentTftGame();
+            else
+                requestResponse = await _riotAPICommunication.GetCurrentLeagueGame();
 
             if (requestResponse.ResponseCode != 404 && requestResponse.ResponseCode != 200)
                 throw new Exception($"Request response code = {requestResponse.ResponseCode}");
-            else if(requestResponse.ResponseCode == 404)
-            {
-                requestResponse = await _riotAPICommunication.GetCurrentLeagueGame();
-
-                if (requestResponse.ResponseCode != 404 && requestResponse.ResponseCode != 200)
-                    throw new Exception($"Request response code = {requestResponse.ResponseCode}");
-            }
 
             matchInfo.IsOngoing = requestResponse.ResponseCode == 200;
 

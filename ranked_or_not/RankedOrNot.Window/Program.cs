@@ -30,10 +30,15 @@ namespace RankedOrNot.Window
                 .AddUserSecrets<Program>()
                 .Build();
 
+            var isDeveloperMode = System.Configuration.ConfigurationManager.AppSettings["IsDeveloperMode"] == "true";
+
+            var leagueApiKey = isDeveloperMode ? config["ApiSettings:LeagueApiKey"] : System.Configuration.ConfigurationManager.AppSettings["ApiKey"];
+            var tftpiKey = isDeveloperMode ? config["ApiSettings:TftApiKey"] : System.Configuration.ConfigurationManager.AppSettings["ApiKey"];
+
             var apiSettings = new APISettings
             {
-                LeagueApiKey = config["ApiSettings:LeagueApiKey"],
-                TftApiKey = config["ApiSettings:TftApiKey"],
+                LeagueApiKey = leagueApiKey,
+                TftApiKey = tftpiKey,
                 LeagueName = System.Configuration.ConfigurationManager.AppSettings["LeagueName"],
                 Tagline = System.Configuration.ConfigurationManager.AppSettings["Tagline"]
             };
@@ -43,6 +48,7 @@ namespace RankedOrNot.Window
                 {
                     services.AddSingleton<Form1>();
                     services.AddScoped<IRiotAPICommunication>(x => new RiotAPICommunication(apiSettings));
+                    services.AddScoped<IGameClientAPICommunication, GameClientAPICommunication>();
                     services.AddScoped<IMatchInfoHelper, MatchInfoHelper>();
                     services.AddLogging();
                 });
