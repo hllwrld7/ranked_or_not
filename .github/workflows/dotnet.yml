@@ -25,7 +25,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore ranked_or_not
     - name: Publish Artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: RankedOrNot
         path: \ranked_or_not\RankedOrNot.Window\bin\Debug\net8.0-windows
