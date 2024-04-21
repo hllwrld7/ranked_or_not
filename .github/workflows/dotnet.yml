@@ -28,4 +28,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: RankedOrNot
-        path: ranked_or_not\ranked_or_not\RankedOrNot.Window\bin\Debug\net8.0-windows
+        path: \RankedOrNot.Window\bin\Debug\net8.0-windows
